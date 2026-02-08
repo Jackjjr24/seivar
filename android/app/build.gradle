@@ -1,0 +1,63 @@
+plugins {
+    id "com.android.application"
+    id "org.jetbrains.kotlin.android" // ✅ instead of kotlin-android
+    id "dev.flutter.flutter-gradle-plugin"
+    id "com.google.gms.google-services"
+}
+
+android {
+    namespace = "com.example.untitled2"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    defaultConfig {
+        applicationId = "com.example.untitled2"
+        minSdk = 23
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+    }
+
+    buildTypes {
+        release {
+            // ✅ Sign with your release key (currently debug for testing)
+            signingConfig = signingConfigs.debug
+
+            // ✅ Enable minify and shrinkResources
+            minifyEnabled true
+            shrinkResources true
+
+            // ✅ Point to ProGuard rules file
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
+        }
+
+        debug {
+            signingConfig = signingConfigs.debug
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+dependencies {
+    // Import the Firebase BoM (Bill of Materials)
+    implementation platform('com.google.firebase:firebase-bom:34.1.0')
+
+    // Firebase SDKs
+    implementation 'com.google.firebase:firebase-analytics'
+    // Add more if needed
+    // implementation 'com.google.firebase:firebase-auth'
+    // implementation 'com.google.firebase:firebase-firestore'
+}

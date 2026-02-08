@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Payments collection - authenticated users can read and write their own payments
+    match /payments/{paymentId} {
+      allow read: if request.auth != null && resource.data.user_id == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.user_id == request.auth.uid;
+      allow update, delete: if false; // No updates or deletes
+    }
+    
+    // Failed payments - authenticated users can read and write their own failed payments
+    match /failed_payments/{docId} {
+      allow read: if request.auth != null && resource.data.user_id == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.user_id == request.auth.uid;
+      allow update, delete: if false; // No updates or deletes
+    }
+  }
+}
